@@ -2,7 +2,7 @@
 
 # This project
 runs/
-data/
+datasets/
 
 # Visual Studio Code
 .vscode
