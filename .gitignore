@@ -3,6 +3,7 @@
 # This project
 runs/
 datasets/
+output/
 
 # Visual Studio Code
 .vscode

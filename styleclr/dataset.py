@@ -22,17 +22,23 @@ class ContrastiveLearningDataset:
         return data_transforms
 
     def get_dataset(self, name, n_views):
-        valid_datasets = {'cifar10': lambda: datasets.CIFAR10(self.root_folder, train=True,
-                                                              transform=ContrastiveLearningViewGenerator(
-                                                                  self.get_simclr_pipeline_transform(32),
-                                                                  n_views),
-                                                              download=True),
-
-                          'stl10': lambda: datasets.STL10(self.root_folder, split='unlabeled',
-                                                          transform=ContrastiveLearningViewGenerator(
-                                                              self.get_simclr_pipeline_transform(96),
-                                                              n_views),
-                                                          download=True)}
+        valid_datasets = {
+            'cifar10': lambda: datasets.CIFAR10(self.root_folder, train=True,
+                                                transform=ContrastiveLearningViewGenerator(
+                                                    self.get_simclr_pipeline_transform(32),
+                                                    n_views),
+                                                download=True),
+            'stl10': lambda: datasets.STL10(self.root_folder, split='unlabeled',
+                                            transform=ContrastiveLearningViewGenerator(
+                                                self.get_simclr_pipeline_transform(96),
+                                                n_views),
+                                            download=True),
+            'imagenet': lambda: datasets.ImageNet(self.root_folder, 
+                                            transform=ContrastiveLearningViewGenerator(
+                                                self.get_simclr_pipeline_transform(224),
+                                                n_views),
+                                            download=True)    
+        }
 
         try:
             dataset_fn = valid_datasets[name]

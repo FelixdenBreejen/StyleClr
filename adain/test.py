@@ -7,8 +7,8 @@ from PIL import Image
 from torchvision import transforms
 from torchvision.utils import save_image
 
-import net
-from function import adaptive_instance_normalization, coral
+import adain.net as net
+from adain.function import adaptive_instance_normalization, coral
 
 
 def test_transform(size, crop):
@@ -38,7 +38,7 @@ def style_transfer(vgg, decoder, content, style, alpha=1.0,
         feat = adaptive_instance_normalization(content_f, style_f)
     feat = feat * alpha + content_f * (1 - alpha)
     return decoder(feat)
-
+    
 
 parser = argparse.ArgumentParser()
 # Basic options
