@@ -15,7 +15,7 @@ def test_transform(size, crop):
     return transform
 
 
-def style_transfer(vgg, decoder, content, style, alpha=1.0,
+def style_transfer(device, vgg, decoder, content, style, alpha=1.0,
                    interpolation_weights=None):
     assert (0.0 <= alpha <= 1.0)
     content_f = vgg(content)
