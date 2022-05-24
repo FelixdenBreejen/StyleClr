@@ -1,9 +1,10 @@
 from pathlib import Path
+from PIL import Image
+import pandas as pd
 
 import torch
 import torch.nn as nn
-from torchvision.transforms import transforms
-from torchvision import transforms, datasets
+from torchvision import transforms
 
 from simclr.data_aug.gaussian_blur import GaussianBlur
 from simclr.data_aug.view_generator import ContrastiveLearningViewGenerator
@@ -12,6 +13,29 @@ from simclr.exceptions.exceptions import InvalidDatasetSelection
 import adain.net as net
 
 from styleclr.test import test_transform, style_transfer
+
+
+class PainterDataset(torch.utils.data.Dataset):
+
+    def __init__(self, root, transform):
+        self.image_folder_path = Path(root) / 'train'
+        self.csv_path = Path(root) / 'train_info.csv'
+        self.transform = transform
+
+        self.csv = pd.read_csv(self.csv_path, sep=',')
+
+    
+    def __len__(self):
+        return self.csv.shape[0]
+
+    
+    def __getitem__(self, idx):
+
+        filename = self.csv['filename'].iloc[idx]
+        filepath = self.image_folder_path / filename
+        image = Image.open(filepath)
+        image = self.transform(image)
+        return (image, 0)
 
 
 class StylizedDataset:
